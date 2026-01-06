@@ -1,0 +1,27 @@
+\NeedsTeXFormat{LaTeX2e}[2024/11/01]
+\ProvidesPackage{luaemptyenv}[2025/10/07 v0.1.0 LuaLaTeX package for creating empty environments]
+
+% Required packages
+\RequirePackage{xparse} 
+\RequirePackage{eoldef}  
+
+% NOTE: eoldef was uploaded on CTAN 2025-06-16; may not be in your LaTeX distribution.
+% In such case, install it manually: https://ctan.org/pkg/eoldef
+
+% Load Lua module
+\directlua{luaemptyenv = require('luaemptyenv.lua')}
+
+% Define command to clear rest of line (prevents processing of content on same line as \begin)
+\eoldef\cleartoeline#1{}
+
+% Main command to define new empty environments
+\NewDocumentCommand{\NewEmptyEnvironment}{m}{%
+  % On \begin{...}: activate Lua processing for this environment 
+  % and clear any remaining content on the same line as \begin{...}
+  % On \end{...}: deactivate Lua processing for this environment 
+  \newenvironment{#1}{%
+	\directlua{luaemptyenv.startrecording('#1')}\cleartoeline%
+	}{%
+	\directlua{luaemptyenv.stoprecording('#1')}%
+  }%
+}
