@@ -14,14 +14,30 @@
 % Define command to clear rest of line (prevents processing of content on same line as \begin)
 \eoldef\cleartoeline#1{}
 
-% Main command to define new empty environments
-\NewDocumentCommand{\NewEmptyEnvironment}{m}{%
+% Main command to define new empty environments. 
+\NewDocumentCommand{\emptyenvironment}{moomm}{%
   % On \begin{...}: activate Lua processing for this environment 
   % and clear any remaining content on the same line as \begin{...}
   % On \end{...}: deactivate Lua processing for this environment 
-  \newenvironment{#1}{%
-	\directlua{luaemptyenv.startrecording('#1')}\cleartoeline%
+  \IfNoValueTF{#2}{
+	\newenvironment{#1}{%
+	#4 \directlua{luaemptyenv.startrecording('#1')}\cleartoeline%
 	}{%
-	\directlua{luaemptyenv.stoprecording('#1')}%
-  }%
+	  \directlua{luaemptyenv.stoprecording('#1')} #5 %
+	}%
+  }{
+	\IfNoValueTF{#3}{
+	  \newenvironment{#1}[#2]{%
+	  #4 \directlua{luaemptyenv.startrecording('#1')}\cleartoeline%
+	  }{%
+		\directlua{luaemptyenv.stoprecording('#1')} #5 %
+	  }%
+	}{
+	  \newenvironment{#1}[#2][#3]{%
+	  #4 \directlua{luaemptyenv.startrecording('#1')}\cleartoeline%
+	  }{%
+		\directlua{luaemptyenv.stoprecording('#1')} #5 %
+	  }%
+	}
+  }
 }
