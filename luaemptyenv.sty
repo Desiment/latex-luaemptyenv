@@ -14,14 +14,11 @@
 % Define command to clear rest of line (prevents processing of content on same line as \begin)
 \eoldef\cleartoeline#1{}
 
-% Main command to define new empty environments. Will define environment,
-% even if it was previously defined
+% Main command to define new empty environments. 
 \NewDocumentCommand{\emptyenvironment}{moomm}{%
   % On \begin{...}: activate Lua processing for this environment 
   % and clear any remaining content on the same line as \begin{...}
   % On \end{...}: deactivate Lua processing for this environment 
-  \let\csname #1\endcsname\undefined%
-  \let\csname end#1\endcsname\undefined%
   \IfNoValueTF{#2}{
 	\newenvironment{#1}{%
 	#4 \directlua{luaemptyenv.startrecording('#1')}\cleartoeline%
