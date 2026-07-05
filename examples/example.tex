@@ -1,0 +1,14 @@
+\documentclass{article}
+\usepackage{luaemptyenv}
+
+\emptyenvironment{hidden}{}{}
+
+\begin{document}
+Visible text.
+
+\begin{hidden}
+This text is discarded.
+\end{hidden}
+
+Visible again.
+\end{document}

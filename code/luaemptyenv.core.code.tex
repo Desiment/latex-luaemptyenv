@@ -1,0 +1,26 @@
+% code/luaemptyenv.core.code.tex - Empty environment command
+\eoldef\cleartoeline#1{}
+
+\NewDocumentCommand{\emptyenvironment}{moomm}{%
+  \IfNoValueTF{#2}{
+    \newenvironment{#1}{%
+      #4 \directlua{require('code.luaemptyenv.code').startrecording('#1')}\cleartoeline%
+    }{%
+      \directlua{require('code.luaemptyenv.code').stoprecording('#1')} #5 %
+    }%
+  }{
+    \IfNoValueTF{#3}{
+      \newenvironment{#1}[#2]{%
+        #4 \directlua{require('code.luaemptyenv.code').startrecording('#1')}\cleartoeline%
+      }{%
+        \directlua{require('code.luaemptyenv.code').stoprecording('#1')} #5 %
+      }%
+    }{
+      \newenvironment{#1}[#2][#3]{%
+        #4 \directlua{require('code.luaemptyenv.code').startrecording('#1')}\cleartoeline%
+      }{%
+        \directlua{require('code.luaemptyenv.code').stoprecording('#1')} #5 %
+      }%
+    }
+  }
+}
