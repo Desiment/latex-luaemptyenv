@@ -1,3 +1,13 @@
+---
+name: luaemptyenv-00-usage
+description: Use luaemptyenv in LuaLaTeX documents to define environments that discard their body content.
+license: MIT
+compatibility: opencode
+metadata:
+  package: luaemptyenv
+  topic: usage
+---
+
 # luaemptyenv: Usage
 
 ## When To Use
